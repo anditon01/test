@@ -1,14 +1,14 @@
-package com.mygdx.game;
+package views;
 
 import com.badlogic.gdx.Screen;
+import com.mygdx.game.Box2DTutorial;
 
-public class EndScreen implements Screen{
+public class LoadingScreen implements Screen {
 	private Box2DTutorial parent;
-
-	public EndScreen(Box2DTutorial parent) {
-		this.parent = parent;
+	
+	public LoadingScreen(Box2DTutorial bdd){
+		parent = bdd;
 	}
-
 	@Override
 	public void show() {
 		// TODO Auto-generated method stub
@@ -17,8 +17,7 @@ public class EndScreen implements Screen{
 
 	@Override
 	public void render(float delta) {
-		// TODO Auto-generated method stub
-		
+		parent.changeScreen(Box2DTutorial.MENU);
 	}
 
 	@Override

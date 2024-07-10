@@ -2,6 +2,12 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.Game;
 
+import views.EndScreen;
+import views.LoadingScreen;
+import views.MainScreen;
+import views.MenuScreen;
+import views.PreferencesScreen;
+
 public class Box2DTutorial extends Game {
 	private AppPreferences preferences;
 	private LoadingScreen loadingScreen;

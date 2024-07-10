@@ -1,4 +1,4 @@
-package com.mygdx.game;
+package views;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.mygdx.game.Box2DTutorial;
 
 public class MenuScreen implements Screen {
 	private Box2DTutorial parent;

@@ -1,4 +1,4 @@
-package com.mygdx.game;
+package views;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -7,25 +7,29 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.mygdx.game.B2dModel;
+import com.mygdx.game.Box2DTutorial;
+
+import controller.KeyboardController;
 
 public class MainScreen implements Screen{
 	private Box2DTutorial parent;
 	private B2dModel model;
 	private OrthographicCamera camera;
-//	private KeyboardController controller;
+	private KeyboardController controller;
 	private Box2DDebugRenderer debugRenderer;
 	
 	public MainScreen(Box2DTutorial parent) {
-		 model = new B2dModel();
 		 camera = new OrthographicCamera(32,24);
-		 debugRenderer = new Box2DDebugRenderer();
+		 controller = new KeyboardController();
+		 model = new B2dModel(controller,camera);
+		 debugRenderer = new Box2DDebugRenderer(true,true,true,true,true,true);
 		this.parent = parent;
 	}
 
 	@Override
 	public void show() {
-		// TODO Auto-generated method stub
-		
+		Gdx.input.setInputProcessor(controller);
 	}
 
 	@Override
