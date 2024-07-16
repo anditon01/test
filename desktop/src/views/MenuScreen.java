@@ -16,12 +16,15 @@ import com.mygdx.game.Box2DTutorial;
 public class MenuScreen implements Screen {
 	private Box2DTutorial parent;
 	private Stage stg;
-	
+	Skin skin;
 	public MenuScreen(Box2DTutorial box2dTutorial) {
 		this.parent = box2dTutorial;
 		
 		stg= new Stage(new ScreenViewport());
-		
+		//skin = new Skin(Gdx.files.internal("skin/glassy/glassy-ui.json"));
+		parent.assetManager.queueAddSkin();
+		parent.assetManager.manager.finishLoading();
+		skin = parent.assetManager.manager.get("skin/glassy/glassy-ui.json");
 		//stg.act(Math.min(Gdx.graphics.getDeltaTime(), 1/30f));
 		//stg.draw();
 	}
@@ -33,8 +36,6 @@ public class MenuScreen implements Screen {
 		table.setFillParent(true);
 		table.setDebug(true);
 		stg.addActor(table);
-		
-		Skin skin = new Skin(Gdx.files.internal("skin/glassy/glassy-ui.json"));
 		
 		TextButton newGame = new TextButton("New Game", skin);
 		TextButton preferences = new TextButton("Preferences",skin);
@@ -58,6 +59,7 @@ public class MenuScreen implements Screen {
 			
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
+				//parent.changeScreen(Box2DTutorial.APPLICATION);
 				parent.changeScreen(Box2DTutorial.APPLICATION);
 			}
 		});

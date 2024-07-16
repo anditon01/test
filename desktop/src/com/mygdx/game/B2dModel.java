@@ -23,7 +23,7 @@ public class B2dModel {
 	private Body bodyd;
 	private Body bodys;
 	private Body bodyk;
-	Body player;
+	public Body player;
 
 	public B2dModel(KeyboardController controller, OrthographicCamera camera) {
 		this.world = new World(new Vector2(0,0f), true);
@@ -77,20 +77,20 @@ public class B2dModel {
 	public void logicStep(float delta) {
 		
 		if(controller.left){
-			camera.lookAt(player.getPosition().x, player.getPosition().y, 0);
+			camera.translate(-1, 0);
 			camera.update();
 			System.out.println(camera.getPickRay(delta, delta));
 			player.applyForceToCenter(-10, 0,true);
 		}else if(controller.right){
-			camera.lookAt(player.getPosition().x, player.getPosition().y, 0);
+			camera.translate(1, 0);
 			camera.update();
 			player.applyForceToCenter(10, 0,true);
 		}else if(controller.up){
-			camera.lookAt(player.getPosition().x, player.getPosition().y, 0);
+			camera.translate(0, 1);
 			camera.update();
 			player.applyForceToCenter(0, 10,true);
 		}else if(controller.down){
-			camera.lookAt(player.getPosition().x, player.getPosition().y, 0);
+			camera.translate(0, -1);
 			camera.update();
 			player.applyForceToCenter(0, -10,true);
 		}

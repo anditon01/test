@@ -16,5 +16,6 @@ public class DesktopLauncher {
 //	      new Lwjgl3Application(new Box2DTutorial(), config);
 	      Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
 			new Lwjgl3Application(new Box2DTutorial(), config);
+			//new Lwjgl3Application(new RunnerGame(), config);
 	}
 }

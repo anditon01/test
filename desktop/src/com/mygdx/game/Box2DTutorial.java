@@ -1,7 +1,9 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.audio.Music;
 
+import loader.GameAssetManager;
 import views.EndScreen;
 import views.LoadingScreen;
 import views.MainScreen;
@@ -15,7 +17,8 @@ public class Box2DTutorial extends Game {
 	private MenuScreen menuScreen;
 	private MainScreen mainScreen;
 	private EndScreen endScreen;
-
+	public GameAssetManager assetManager = new GameAssetManager();
+	private Music playingSong;
 	public final static int MENU = 0;
 	public final static int PREFERENCES = 1;
 	public final static int APPLICATION = 2;
@@ -26,6 +29,12 @@ public class Box2DTutorial extends Game {
 		loadingScreen = new LoadingScreen(this);
 		preferences = new AppPreferences();
 		setScreen(loadingScreen);
+
+		assetManager.queueAddMusic();
+		assetManager.manager.finishLoading();
+		playingSong = assetManager.manager.get("music/Dr._Wily_Castle.mp3");
+
+		playingSong.play();
 	}
 
 	public void changeScreen(int screen) {
@@ -52,7 +61,14 @@ public class Box2DTutorial extends Game {
 			break;
 		}
 	}
+
 	public AppPreferences getPreferences() {
 		return this.preferences;
+	}
+
+	@Override
+	public void dispose() {
+		playingSong.dispose();
+		assetManager.manager.dispose();
 	}
 }
