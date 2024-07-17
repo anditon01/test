@@ -17,6 +17,7 @@ public class GameAssetManager {
 	public final String skin = "skin/glassy/glassy-ui.json";
 	public final String title = "title.png";
 	public final String anim = "linksprite.png";
+	public final String animwalk = "walklink.png";
 	// Textures
 	public final String gameImages = "atlas/game.atlas";
 	public final String loadingImages = "atlas/linkanim.atlas";
@@ -25,6 +26,7 @@ public class GameAssetManager {
 	// a small set of images used by the loading screen
 	public void queueAddLoadingImages(){
 		manager.load(loadingImages, TextureAtlas.class);
+		manager.load(animwalk,Texture.class);
 	}
 	public void queueAddSkin(){
 		SkinParameter params = new SkinParameter("skin/glassy/glassy-ui.atlas");

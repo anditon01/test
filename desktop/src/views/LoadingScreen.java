@@ -11,6 +11,11 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasSprite;
 import com.badlogic.gdx.physics.bullet.linearmath.int4;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.mygdx.game.Box2DTutorial;
 
@@ -21,9 +26,12 @@ public class LoadingScreen implements Screen {
 	private AtlasRegion title;
 	private SpriteBatch sb;
 	private int currentLoadingStage;
-	private int stateTime;
-	private Animation linkAnimation;
-	
+	private Animation<TextureRegion> linkAnimation;
+	private Stage stage;
+	private Table table;
+	private Image titleImage;
+	private Table loadingTable;
+	private Animation<TextureRegion> walklink;
 	public final int IMAGE = 0; // loading images
 	public final int FONT = 1; // loading fonts
 	public final int PARTY = 2; // loading particle effects
@@ -35,13 +43,16 @@ public class LoadingScreen implements Screen {
 	public LoadingScreen(Box2DTutorial bdd) {
 		parent = bdd;
 		currentLoadingStage = 0;
+		stage = new Stage(new ScreenViewport());
+		loadAssets();
+		// initiate queueing of images but don't start loading
+		parent.assetManager.queueAddImages();
 		sb = new SpriteBatch();
 		sb.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE);
 	}
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public void show() {
+	private void loadAssets() {
+		// load loading images and wait until finished
 		parent.assetManager.queueAddLoadingImages();
 		parent.assetManager.queueAddImages();
 		parent.assetManager.manager.finishLoading();
@@ -49,9 +60,39 @@ public class LoadingScreen implements Screen {
 		atlas = parent.assetManager.manager.get("atlas/game.atlas");
 		link = atlas.findRegion("link");
 		title = atlas.findRegion("title");
-		
-		linkAnimation = new Animation(1f, atlas.findRegion("linksprites"), PlayMode.LOOP);
+		walklink = parent.assetManager.manager.get("walklink.png");
 
+		linkAnimation = new Animation(0.7f, walklink, PlayMode.LOOP);
+
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public void show() {
+		titleImage = new Image(title);
+		 
+		table = new Table();
+		table.setFillParent(true);
+		table.setDebug(false);
+			
+		loadingTable = new Table();
+		loadingTable.add(new LoadingBarPart(link,linkAnimation));
+		loadingTable.add(new LoadingBarPart(link,linkAnimation));
+		loadingTable.add(new LoadingBarPart(link,linkAnimation));
+		loadingTable.add(new LoadingBarPart(link,linkAnimation));
+		loadingTable.add(new LoadingBarPart(link,linkAnimation));
+		loadingTable.add(new LoadingBarPart(link,linkAnimation));
+		loadingTable.add(new LoadingBarPart(link,linkAnimation));
+		loadingTable.add(new LoadingBarPart(link,linkAnimation));
+		loadingTable.add(new LoadingBarPart(link,linkAnimation));
+		loadingTable.add(new LoadingBarPart(link,linkAnimation));
+			
+			
+		table.add(titleImage).align(Align.center).pad(10, 0, 0, 0).colspan(10); 
+		table.row(); // move to next row
+		table.add(loadingTable).width(400);
+			
+		stage.addActor(table);	
 		parent.assetManager.queueAddImages();
 		System.out.println("Loading images... ");
 	}
@@ -62,17 +103,12 @@ public class LoadingScreen implements Screen {
 		Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-		stateTime += delta; // Accumulate elapsed animation time // new
-		// Get current frame of animation for the current stateTime
-		TextureRegion currentFrame =  (TextureRegion) linkAnimation.getKeyFrame(stateTime, true); // new
-
-		sb.begin();
-		drawLoadingBar(currentLoadingStage*2, currentFrame);
-		sb.draw(title, 135, 250);
-		sb.end();
-
 		if (parent.assetManager.manager.update()) {
-			currentLoadingStage += 1;
+			currentLoadingStage+= 1;
+			if(currentLoadingStage <= 5){
+				loadingTable.getCells().get((currentLoadingStage-1)*2).getActor().setVisible(true);  // new
+				loadingTable.getCells().get((currentLoadingStage-1)*2+1).getActor().setVisible(true); 
+			}
 			switch (currentLoadingStage) {
 			case FONT:
 				System.out.println("Loading fonts....");
@@ -103,8 +139,8 @@ public class LoadingScreen implements Screen {
 				}
 			}
 		}
-
-		parent.changeScreen(Box2DTutorial.MENU);
+		stage.act();
+		stage.draw();
 	}
 
 	private void drawLoadingBar(int stage, TextureRegion currentFrame) {
