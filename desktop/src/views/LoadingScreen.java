@@ -2,6 +2,7 @@ package views;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -53,6 +54,7 @@ public class LoadingScreen implements Screen {
 
 	private void loadAssets() {
 		// load loading images and wait until finished
+		
 		parent.assetManager.queueAddLoadingImages();
 		parent.assetManager.queueAddImages();
 		parent.assetManager.manager.finishLoading();

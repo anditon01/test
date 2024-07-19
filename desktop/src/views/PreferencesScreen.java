@@ -17,7 +17,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.mygdx.game.AppPreferences;
 import com.mygdx.game.Box2DTutorial;
+
+import listener.AudioManager;
 
 public class PreferencesScreen implements Screen {
 	private Box2DTutorial parent;
@@ -46,11 +49,13 @@ public class PreferencesScreen implements Screen {
 		Skin skin = new Skin(Gdx.files.internal("skin/glassy/glassy-ui.json"));
 		
 		final Slider volumeMusicSlider = new Slider(0f, 1f, 0.1f, false, skin);
-		volumeMusicSlider.setValue(parent.getPreferences().getMusicVolume());
+		volumeMusicSlider.setValue(AppPreferences.getInstance().getMusicVolume());
+	//	volumeMusicSlider.setValue(parent.getPreferences().getMusicVolume());
 		volumeMusicSlider.addListener(event -> {
 			if (volumeMusicSlider.isDragging()) {
 				float volume =volumeMusicSlider.getValue();
-				parent.getPreferences().setMusicVolume(volume);
+				AudioManager.getInstance().setMusicVolume(volume);
+				//parent.getPreferences().setMusicVolume(volume);
 			}
 			return true;
 		});
@@ -63,13 +68,26 @@ public class PreferencesScreen implements Screen {
 //		});
 		
 		final Slider volumeSoundSlider = new Slider(0f, 1f, 0.1f, false, skin);
-		volumeSoundSlider.setValue(parent.getPreferences().getSoundVolume());
-		volumeSoundSlider.addListener(new EventListener() {
-			@Override
-			public boolean handle(Event event) {
-				parent.getPreferences().setSoundVolume(volumeSoundSlider.getValue());
-				return false;
-			}
+		volumeSoundSlider.setValue(AppPreferences.getInstance().getSoundVolume());
+		//volumeSoundSlider.setValue(parent.getPreferences().getSoundVolume());
+		volumeSoundSlider.addListener(event ->{
+            if (volumeSoundSlider.isDragging() || volumeSoundSlider.isTouchable()) {
+                float volume = volumeSoundSlider.getValue();
+                AppPreferences.getInstance().setSoundVolume(volume);
+                
+               // AudioManager.getInstance().setMusicVolume(volume);
+            }
+            return true;
+				
+				
+				
+				//new EventListener() {
+		//	@Override
+			//public boolean handle(Event event) {
+				
+				//parent.getPreferences().setSoundVolume(volumeSoundSlider.getValue());
+			//	return false;
+			//}
 		});
 //		final CheckBox musiCheckBox = new CheckBox(null, skin);
 //		//musiCheckBox.setChecked(parent.get);
@@ -92,17 +110,17 @@ public class PreferencesScreen implements Screen {
 //				return false;
 //			}
 //		});
-		final TextButton saveButton = new TextButton("Save", skin,"small");
-		saveButton.addListener(new EventListener() {
-			@Override
-			public boolean handle(Event event) {
-				parent.getPreferences().setMusicVolume(volumeMusicSlider.getValue());
-			//	System.out.println(parent.getPreferences().getMusicVolume());
-				System.out.println(parent.getPreferences().getSoundVolume());
-				parent.getPreferences().setMusicVolume(volumeMusicSlider.getValue());
-				return false;
-			}
-		});
+//		final TextButton saveButton = new TextButton("Save", skin,"small");
+//		saveButton.addListener(new EventListener() {
+//			@Override
+//			public boolean handle(Event event) {
+//				parent.getPreferences().setMusicVolume(volumeMusicSlider.getValue());
+//			//	System.out.println(parent.getPreferences().getMusicVolume());
+//				System.out.println(parent.getPreferences().getSoundVolume());
+//				parent.getPreferences().setMusicVolume(volumeMusicSlider.getValue());
+//				return false;
+//			}
+//		});
 		
 		final TextButton backButton = new TextButton("Back", skin,"small");
 		backButton.addListener(new ChangeListener() {
@@ -130,7 +148,7 @@ public class PreferencesScreen implements Screen {
 		//table.add(soundOnOffLabel);
 		//table.add(soundEffectsCheckBox);
 		table.row().pad(10,0,0,10);
-		table.add(saveButton).colspan(2);
+		//table.add(saveButton).colspan(2);
 		table.row().pad(10,0,0,10);
 		table.add(backButton);
 	}

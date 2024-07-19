@@ -2,6 +2,7 @@ package views;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -14,6 +15,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.mygdx.game.Box2DTutorial;
 
+import listener.AudioManager;
+
 public class MenuScreen implements Screen {
 	private Box2DTutorial parent;
 	private Stage stg;
@@ -24,14 +27,17 @@ public class MenuScreen implements Screen {
 		this.parent = box2dTutorial;
 		
 		stg= new Stage(new ScreenViewport());
+		
 		parent.assetManager.queueAddMusic();
 		//skin = new Skin(Gdx.files.internal("skin/glassy/glassy-ui.json"));
 		parent.assetManager.queueAddSkin();
 		parent.assetManager.manager.finishLoading();
 		
-		titleTheme = parent.assetManager.manager.get("music/title_theme.mp3");
-		titleTheme.setVolume(parent.getPreferences().getMusicVolume());
-		titleTheme.play();
+		AudioManager.getInstance().playMusic("music/title_theme.mp3", true);
+		
+		//titleTheme = parent.assetManager.manager.get("music/title_theme.mp3");
+		//titleTheme.setVolume(parent.getPreferences().getMusicVolume());
+		//titleTheme.play();
 		skin = parent.assetManager.manager.get("skin/glassy/glassy-ui.json");
 		//stg.act(Math.min(Gdx.graphics.getDeltaTime(), 1/30f));
 		//stg.draw();
@@ -68,7 +74,7 @@ public class MenuScreen implements Screen {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
 				//parent.changeScreen(Box2DTutorial.APPLICATION);
-				titleTheme.stop();
+				//titleTheme.stop();
 				parent.changeScreen(Box2DTutorial.APPLICATION);
 			}
 		});

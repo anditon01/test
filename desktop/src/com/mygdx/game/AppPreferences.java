@@ -9,7 +9,18 @@ public class AppPreferences {
 	private static final String PREF_SOUND_ENABLED = "sound.enabled";
 	private static final String PREF_SOUND_VOL = "sound";
 	private static final String PREFS_NAME = "b2dtut";
- 
+	//
+    private static AppPreferences instance;
+
+    private AppPreferences() {}
+
+    public static AppPreferences getInstance() {
+        if (instance == null) {
+            instance = new AppPreferences();
+        }
+        return instance;
+    }
+ //
 	protected Preferences getPrefs() {
 		return Gdx.app.getPreferences(PREFS_NAME);
 	}
