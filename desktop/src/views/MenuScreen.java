@@ -28,12 +28,12 @@ public class MenuScreen implements Screen {
 		
 		stg= new Stage(new ScreenViewport());
 		
-		parent.assetManager.queueAddMusic();
+		//parent.assetManager.queueAddMusic();
 		//skin = new Skin(Gdx.files.internal("skin/glassy/glassy-ui.json"));
 		parent.assetManager.queueAddSkin();
 		parent.assetManager.manager.finishLoading();
 		
-		AudioManager.getInstance().playMusic("music/title_theme.mp3", true);
+		titleTheme= AudioManager.getInstance().playMusic("music/title_theme.mp3", true);
 		
 		//titleTheme = parent.assetManager.manager.get("music/title_theme.mp3");
 		//titleTheme.setVolume(parent.getPreferences().getMusicVolume());
@@ -74,7 +74,7 @@ public class MenuScreen implements Screen {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
 				//parent.changeScreen(Box2DTutorial.APPLICATION);
-				//titleTheme.stop();
+				titleTheme.stop();
 				parent.changeScreen(Box2DTutorial.APPLICATION);
 			}
 		});

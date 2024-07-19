@@ -16,6 +16,8 @@ public class GameAssetManager {
 	public final String titleTheme = "music/title_theme.mp3";
 	// Skin
 	public final String skin = "skin/glassy/glassy-ui.json";
+	public final String skinMetal = "skin/metal/metal-ui.json";
+	
 	public final String title = "title.png";
 	public final String anim = "linksprite.png";
 	public final String animwalk = "walklink.png";
@@ -31,6 +33,8 @@ public class GameAssetManager {
 	}
 	public void queueAddSkin(){
 		SkinParameter params = new SkinParameter("skin/glassy/glassy-ui.atlas");
+		SkinParameter params1 = new SkinParameter("skin/metal/metal-ui.atlas") ;
+		manager.load(skinMetal, Skin.class, params1);
 		manager.load(skin, Skin.class, params);
 	}
 	public void queueAddImages() {

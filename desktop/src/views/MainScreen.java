@@ -1,6 +1,9 @@
 package views;
 
+import java.util.random.RandomGenerator.StreamableGenerator;
+
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Camera;
@@ -10,10 +13,14 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.mygdx.game.B2dModel;
 import com.mygdx.game.Box2DTutorial;
 
 import controller.KeyboardController;
+import listener.AudioManager;
 
 public class MainScreen implements Screen {
 	private Box2DTutorial parent;
@@ -24,8 +31,12 @@ public class MainScreen implements Screen {
 	private Texture playerTex;
 	private Music gameMusic;
 	SpriteBatch sb;
-
+	private boolean isPaused;
+	private PauseScreen pausa;
+	private Stage stage;
+	
 	public MainScreen(Box2DTutorial parent) {
+		
 		camera = new OrthographicCamera(32, 24);
 		controller = new KeyboardController();
 		model = new B2dModel(controller, camera);
@@ -38,17 +49,27 @@ public class MainScreen implements Screen {
 		// method
 		parent.assetManager.queueAddImages();
 		parent.assetManager.queueAddMusic();
+		parent.assetManager.queueAddSkin();
 		// tells the asset manager to load the images and wait until finsihed loading.
 		parent.assetManager.manager.finishLoading();
+		
 		// gets the images as a texture
-		gameMusic = parent.assetManager.manager.get("music/Dr._Wily_Castle.mp3");
+		gameMusic= AudioManager.getInstance().playMusic("music/Dr._Wily_Castle.mp3", true);
+		//gameMusic = parent.assetManager.manager.get("music/Dr._Wily_Castle.mp3");
 		gameMusic.play();
 		playerTex = parent.assetManager.manager.get("link.png");
 	}
 
 	@Override
 	public void show() {
+		stage = new Stage(new ScreenViewport());
+		Gdx.input.setInputProcessor(stage);
 		Gdx.input.setInputProcessor(controller);
+		//Skin skin = new Skin(Gdx.files.internal("skin/metal/metal-ui.json"));
+		pausa = new PauseScreen(); 
+		pausa.setVisible(false);
+		stage.addActor(pausa);
+		
 	}
 
 	@Override
@@ -57,6 +78,16 @@ public class MainScreen implements Screen {
 		Gdx.gl.glClearColor(0f, 0f, 0f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+		 if (Gdx.input.isKeyJustPressed(Keys.ESCAPE)) {
+			 
+	            //isPaused = !isPaused;
+	            pausa.setVisible(!pausa.isVisible());
+	            System.out.println("pause"+pausa.isVisible());
+	            //parent.changeScreen(Box2DTutorial.PREFERENCES);
+	         //   optionsMenu.setVisible(isPaused);
+	        }
+		 stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
+		stage.draw();
 		sb.begin();
 		sb.draw(playerTex, model.player.getPosition().x-1, model.player.getPosition().y-1, 2, 2);
 		sb.end();

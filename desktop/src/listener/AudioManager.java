@@ -24,7 +24,7 @@ public class AudioManager {
 		return instance;
 	}
 
-	public void playMusic(String filePath, boolean looping) {
+	public Music playMusic(String filePath, boolean looping) {
 		if (currentMusic != null) {
 			currentMusic.stop();
 			currentMusic.dispose();
@@ -33,6 +33,7 @@ public class AudioManager {
 		currentMusic.setLooping(looping);
 		currentMusic.setVolume(musicVolume);
 		currentMusic.play();
+		return currentMusic;
 	}
 
 	public void playMusic(Music music, boolean looping) {
