@@ -31,7 +31,7 @@ public class LoadingScreen implements Screen {
 	private Table table;
 	private Image titleImage;
 	private Table loadingTable;
-	private Animation<TextureRegion> walklink;
+	//private Animation<TextureRegion> walklink;
 	public final int IMAGE = 0; // loading images
 	public final int FONT = 1; // loading fonts
 	public final int PARTY = 2; // loading particle effects
@@ -60,13 +60,12 @@ public class LoadingScreen implements Screen {
 		atlas = parent.assetManager.manager.get("atlas/game.atlas");
 		link = atlas.findRegion("link");
 		title = atlas.findRegion("title");
-		walklink = parent.assetManager.manager.get("walklink.png");
+		//walklink = parent.assetManager.manager.get("walklink.png");
 
-		linkAnimation = new Animation(0.7f, walklink, PlayMode.LOOP);
+		linkAnimation = new Animation<TextureRegion>(0.7f,atlas.findRegions("linksprite"), PlayMode.LOOP);
 
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void show() {
 		titleImage = new Image(title);
@@ -86,7 +85,7 @@ public class LoadingScreen implements Screen {
 		loadingTable.add(new LoadingBarPart(link,linkAnimation));
 		loadingTable.add(new LoadingBarPart(link,linkAnimation));
 		loadingTable.add(new LoadingBarPart(link,linkAnimation));
-			
+			//loadingTable.add("Cargando...");
 			
 		table.add(titleImage).align(Align.center).pad(10, 0, 0, 0).colspan(10); 
 		table.row(); // move to next row

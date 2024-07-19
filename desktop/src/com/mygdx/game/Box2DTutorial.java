@@ -30,11 +30,11 @@ public class Box2DTutorial extends Game {
 		preferences = new AppPreferences();
 		setScreen(loadingScreen);
 
-		assetManager.queueAddMusic();
-		assetManager.manager.finishLoading();
-		playingSong = assetManager.manager.get("music/Dr._Wily_Castle.mp3");
+		//assetManager.queueAddMusic();
+		//assetManager.manager.finishLoading();
+		//playingSong = assetManager.manager.get("music/Dr._Wily_Castle.mp3");
 
-		playingSong.play();
+		//playingSong.play();
 	}
 
 	public void changeScreen(int screen) {
@@ -68,7 +68,7 @@ public class Box2DTutorial extends Game {
 
 	@Override
 	public void dispose() {
-		playingSong.dispose();
+		//playingSong.dispose();
 		assetManager.manager.dispose();
 	}
 }

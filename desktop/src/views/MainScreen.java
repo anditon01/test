@@ -2,6 +2,7 @@ package views;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -21,6 +22,7 @@ public class MainScreen implements Screen {
 	private KeyboardController controller;
 	private Box2DDebugRenderer debugRenderer;
 	private Texture playerTex;
+	private Music gameMusic;
 	SpriteBatch sb;
 
 	public MainScreen(Box2DTutorial parent) {
@@ -35,9 +37,12 @@ public class MainScreen implements Screen {
 		// tells our asset manger that we want to load the images set in loadImages
 		// method
 		parent.assetManager.queueAddImages();
+		parent.assetManager.queueAddMusic();
 		// tells the asset manager to load the images and wait until finsihed loading.
 		parent.assetManager.manager.finishLoading();
 		// gets the images as a texture
+		gameMusic = parent.assetManager.manager.get("music/Dr._Wily_Castle.mp3");
+		gameMusic.play();
 		playerTex = parent.assetManager.manager.get("link.png");
 	}
 

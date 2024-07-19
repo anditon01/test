@@ -13,6 +13,7 @@ public class GameAssetManager {
 	public final String playerImage = "link.png";
 	public final String enemyImage = "drop.png";
 	public final String playingSong = "music/Dr._Wily_Castle.mp3";
+	public final String titleTheme = "music/title_theme.mp3";
 	// Skin
 	public final String skin = "skin/glassy/glassy-ui.json";
 	public final String title = "title.png";
@@ -39,6 +40,7 @@ public class GameAssetManager {
 	}
 	public void queueAddMusic(){
 		manager.load(playingSong, Music.class);
+		manager.load(titleTheme, Music.class);
 	}
 	public void queueAddFonts() {
 		// TODO Auto-generated method stub

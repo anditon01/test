@@ -27,7 +27,7 @@ public class PreferencesScreen implements Screen {
 	private Label volumeSoundLabel;
 	private Label musicOnOffLabel;
 	private Label soundOnOffLabel;
-
+	
 	public PreferencesScreen(Box2DTutorial parent) {
 		this.parent = parent;
 		stg= new Stage(new ScreenViewport());
@@ -47,13 +47,20 @@ public class PreferencesScreen implements Screen {
 		
 		final Slider volumeMusicSlider = new Slider(0f, 1f, 0.1f, false, skin);
 		volumeMusicSlider.setValue(parent.getPreferences().getMusicVolume());
-		volumeMusicSlider.addListener(new EventListener() {
-			@Override
-			public boolean handle(Event event) {
-				parent.getPreferences().setMusicVolume(volumeMusicSlider.getValue());
-				return false;
+		volumeMusicSlider.addListener(event -> {
+			if (volumeMusicSlider.isDragging()) {
+				float volume =volumeMusicSlider.getValue();
+				parent.getPreferences().setMusicVolume(volume);
 			}
+			return true;
 		});
+//		volumeMusicSlider.addListener(new EventListener() {
+//			@Override
+//			public boolean handle(Event event) {
+//				parent.getPreferences().setMusicVolume(volumeMusicSlider.getValue());
+//				return false;
+//			}
+//		});
 		
 		final Slider volumeSoundSlider = new Slider(0f, 1f, 0.1f, false, skin);
 		volumeSoundSlider.setValue(parent.getPreferences().getSoundVolume());
@@ -90,7 +97,7 @@ public class PreferencesScreen implements Screen {
 			@Override
 			public boolean handle(Event event) {
 				parent.getPreferences().setMusicVolume(volumeMusicSlider.getValue());
-				//System.out.println(parent.getPreferences().getMusicVolume());
+			//	System.out.println(parent.getPreferences().getMusicVolume());
 				System.out.println(parent.getPreferences().getSoundVolume());
 				parent.getPreferences().setMusicVolume(volumeMusicSlider.getValue());
 				return false;
