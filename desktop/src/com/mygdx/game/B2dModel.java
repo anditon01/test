@@ -15,32 +15,35 @@ import controller.KeyboardController;
 import listener.B2dContactListener;
 
 public class B2dModel {
-	
+
 	public World world;
 	private KeyboardController controller;
-	private Box2DDebugRenderer debugRenderer;
+	//private Box2DDebugRenderer debugRenderer;
 	private OrthographicCamera camera;
 	private Body bodyd;
 	private Body bodys;
 	private Body bodyk;
 	public Body player;
+	private float movSpeed = 5f;
 
 	public B2dModel(KeyboardController controller, OrthographicCamera camera) {
-		this.world = new World(new Vector2(0,0f), true);
+		this.world = new World(new Vector2(0, 0f), true);
 		this.controller = controller;
 		this.camera = camera;
 		world.setContactListener(new B2dContactListener(this));
-		//createFloor();
-		//createObject();
-		//createMovingObject();
+		// createFloor();
+		// createObject();
+		// createMovingObject();
 		BodyFactory bodyFactory = BodyFactory.getInstance(world);
-		player =bodyFactory.makeBoxPolyBody(1, 1, 2, 2, BodyFactory.RUBBER, BodyType.DynamicBody, true);
-		bodyFactory.makeBoxPolyBody(0, -10, 50,10, BodyFactory.RUBBER, BodyType.StaticBody, false);
-		//bodyFactory.makeCirclePolyBody(1, 1, 2, BodyFactory.RUBBER, BodyType.DynamicBody, false);
-		//bodyFactory.makeCirclePolyBody(4, 1, 2, BodyFactory.STEEL, BodyType.DynamicBody, false);
+		player = bodyFactory.makeBoxPolyBody(1, 1, 2, 2, BodyFactory.RUBBER, BodyType.DynamicBody, true);
+		bodyFactory.makeBoxPolyBody(0, -10, 50, 10, BodyFactory.RUBBER, BodyType.StaticBody, false);
+		// bodyFactory.makeCirclePolyBody(1, 1, 2, BodyFactory.RUBBER,
+		// BodyType.DynamicBody, false);
+		// bodyFactory.makeCirclePolyBody(4, 1, 2, BodyFactory.STEEL,
+		// BodyType.DynamicBody, false);
 		bodyFactory.makeCirclePolyBody(-4, 1, 2, BodyFactory.STONE, BodyType.DynamicBody, false);
 	}
-	
+
 //	private void createMovingObject() {
 //		BodyDef bodyDef = new BodyDef();
 //		bodyDef.type = BodyDef.BodyType.KinematicBody;
@@ -75,29 +78,32 @@ public class B2dModel {
 //	}
 
 	public void logicStep(float delta) {
-		
-		if(controller.left){
-			camera.translate(-1, 0);
-			camera.update();
-			System.out.println(camera.getPickRay(delta, delta));
-			player.applyForceToCenter(-10, 0,true);
-		}else if(controller.right){
-			camera.translate(1, 0);
-			camera.update();
-			player.applyForceToCenter(10, 0,true);
-		}else if(controller.up){
-			camera.translate(0, 1);
-			camera.update();
-			player.applyForceToCenter(0, 10,true);
-		}else if(controller.down){
-			camera.translate(0, -1);
-			camera.update();
-			player.applyForceToCenter(0, -10,true);
+		float movx = 0;
+		float movy = 0;
+		if (controller.left) {
+			movx = -1;
+			// player.applyForceToCenter(-10, 0, true);
+		} else if (controller.right) {
+			movx = 1;
+			// player.a<<pplyForceToCenter(10, 0, true);
 		}
-			
-		world.step(delta , 3, 3);
+		
+		if (controller.up) {
+			movy = 1;
+			// player.applyForceToCenter(0, 10, true);
+		} else if (controller.down) {
+			movy = -1;
+			// player.applyForceToCenter(0, -10, true);
+		}
+		
+		Vector2 movement = new Vector2(movx, movy);
+        if (movement.len2() > 0) {
+            movement.nor().scl(movSpeed);
+        }
+		player.setLinearVelocity(movement);
+		world.step(delta, 3, 3);
 	}
-	
+
 //	private void createObject() {
 //		BodyDef bodyDef = new BodyDef();
 //		bodyDef.type = BodyDef.BodyType.DynamicBody;

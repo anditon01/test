@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.mygdx.game.Box2DTutorial;
 
@@ -47,30 +48,31 @@ public class MenuScreen implements Screen {
 	public void show() {
 		Gdx.input.setInputProcessor(stg);
 		Table table = new Table();
-		table.setFillParent(true);
+		//table.setFillParent(true);
 		table.setDebug(true);
+		//table.setSize(00, 200);
+		table.align(Align.bottomLeft);
+		
 		stg.addActor(table);
 		
 		TextButton newGame = new TextButton("New Game", skin);
 		TextButton preferences = new TextButton("Preferences",skin);
 		TextButton exit = new TextButton("Exit", skin);
 		
-		table.add(newGame).fillX().uniformX();
+		table.add(newGame).colspan(2);
 		table.row().pad(10, 0, 10, 0);
 		table.add(preferences);
 		table.row();
 		table.add(exit).fillX().uniformX();
 		
-		exit.addListener(new ChangeListener() {
-			
+		exit.addListener(new ChangeListener() {			
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
 				Gdx.app.exit();
 			}
 		});
 		
-		newGame.addListener(new ChangeListener() {
-			
+		newGame.addListener(new ChangeListener() {			
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
 				//parent.changeScreen(Box2DTutorial.APPLICATION);

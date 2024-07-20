@@ -17,11 +17,12 @@ public class GameAssetManager {
 	// Skin
 	public final String skin = "skin/glassy/glassy-ui.json";
 	public final String skinMetal = "skin/metal/metal-ui.json";
-	
+	// Textures
 	public final String title = "title.png";
 	public final String anim = "linksprite.png";
 	public final String animwalk = "walklink.png";
-	// Textures
+	//Atlas
+	public final String walkAtlas = "atlas/linkwalk.atlas";
 	public final String gameImages = "atlas/game.atlas";
 	public final String loadingImages = "atlas/linkanim.atlas";
 
@@ -38,6 +39,7 @@ public class GameAssetManager {
 		manager.load(skin, Skin.class, params);
 	}
 	public void queueAddImages() {
+		manager.load(walkAtlas,TextureAtlas.class);
 		manager.load(gameImages, TextureAtlas.class);
 		manager.load(playerImage, Texture.class);
 		manager.load(enemyImage, Texture.class);

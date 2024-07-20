@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -19,17 +20,21 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.mygdx.game.AppPreferences;
 import com.mygdx.game.Box2DTutorial;
+import com.mygdx.game.MyGdxGame;
 
 import listener.AudioManager;
 
 public class PreferencesScreen implements Screen {
 	private Box2DTutorial parent;
 	private Stage stg;
+	private MyGdxGame game;
 	private Label titleLabel;
 	private Label volumeMusicLabel;
-	private Label volumeSoundLabel;
+	private Label resolutionLabel;
 	private Label musicOnOffLabel;
 	private Label soundOnOffLabel;
+	private MainScreen mainScreen;
+	private SelectBox<String> resolutionSelectBox;
 	
 	public PreferencesScreen(Box2DTutorial parent) {
 		this.parent = parent;
@@ -47,7 +52,24 @@ public class PreferencesScreen implements Screen {
 		stg.addActor(table);
 
 		Skin skin = new Skin(Gdx.files.internal("skin/glassy/glassy-ui.json"));
-		
+		resolutionSelectBox = new SelectBox<>(skin);
+        resolutionSelectBox.setItems("1280x720", "1920x1080", "800x600");
+        
+        String resolution = Gdx.graphics.getWidth()+"x"+Gdx.graphics.getHeight();
+        System.out.println(resolution);
+        resolutionSelectBox.setSelected(resolution);
+        resolutionSelectBox.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                String selected = resolutionSelectBox.getSelected();
+                String[] dimensions = selected.split("x");
+                int width = Integer.parseInt(dimensions[0]);
+                int height = Integer.parseInt(dimensions[1]);
+                //parent.resize(width, height);
+                Gdx.graphics.setWindowedMode(width, height);
+            }
+        });
+        
 		final Slider volumeMusicSlider = new Slider(0f, 1f, 0.1f, false, skin);
 		volumeMusicSlider.setValue(AppPreferences.getInstance().getMusicVolume());
 	//	volumeMusicSlider.setValue(parent.getPreferences().getMusicVolume());
@@ -59,13 +81,6 @@ public class PreferencesScreen implements Screen {
 			}
 			return true;
 		});
-//		volumeMusicSlider.addListener(new EventListener() {
-//			@Override
-//			public boolean handle(Event event) {
-//				parent.getPreferences().setMusicVolume(volumeMusicSlider.getValue());
-//				return false;
-//			}
-//		});
 		
 		final Slider volumeSoundSlider = new Slider(0f, 1f, 0.1f, false, skin);
 		volumeSoundSlider.setValue(AppPreferences.getInstance().getSoundVolume());
@@ -77,61 +92,24 @@ public class PreferencesScreen implements Screen {
                 
                // AudioManager.getInstance().setMusicVolume(volume);
             }
-            return true;
-				
-				
-				
-				//new EventListener() {
-		//	@Override
-			//public boolean handle(Event event) {
-				
-				//parent.getPreferences().setSoundVolume(volumeSoundSlider.getValue());
-			//	return false;
-			//}
+            return true;				
 		});
-//		final CheckBox musiCheckBox = new CheckBox(null, skin);
-//		//musiCheckBox.setChecked(parent.get);
-//		musiCheckBox.addListener(new EventListener() {
-//			
-//			@Override
-//			public boolean handle(Event event) {
-//				boolean enabled = musiCheckBox.isChecked();
-//				return false;
-//			}
-//		});
-//		
-//		final CheckBox soundEffectsCheckBox = new CheckBox(null, skin);
-//		//musiCheckBox.setChecked(parent.get);
-//		musiCheckBox.addListener(new EventListener() {
-//			
-//			@Override
-//			public boolean handle(Event event) {
-//				boolean enabled = soundEffectsCheckBox.isChecked();
-//				return false;
-//			}
-//		});
-//		final TextButton saveButton = new TextButton("Save", skin,"small");
-//		saveButton.addListener(new EventListener() {
-//			@Override
-//			public boolean handle(Event event) {
-//				parent.getPreferences().setMusicVolume(volumeMusicSlider.getValue());
-//			//	System.out.println(parent.getPreferences().getMusicVolume());
-//				System.out.println(parent.getPreferences().getSoundVolume());
-//				parent.getPreferences().setMusicVolume(volumeMusicSlider.getValue());
-//				return false;
-//			}
-//		});
 		
 		final TextButton backButton = new TextButton("Back", skin,"small");
 		backButton.addListener(new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
-				parent.changeScreen(Box2DTutorial.MENU);
+				if ( parent.getMainScreen()!=null) {
+					parent.changeScreen(Box2DTutorial.PAUSE);
+				}else {
+					parent.changeScreen(Box2DTutorial.MENU);					
+				}
+				
 			}
 		});
 		titleLabel = new Label("Preferences", skin);
 		volumeMusicLabel = new Label("Music Volume",skin);
-		volumeSoundLabel = new Label("Music", skin);
+		resolutionLabel = new Label("Resolution", skin);
 		musicOnOffLabel = new Label("Sound Volume",skin);
 		soundOnOffLabel = new Label("Sound Effect",skin);
 		
@@ -144,8 +122,9 @@ public class PreferencesScreen implements Screen {
 		table.row().pad(10,0,0,10);
 		table.add(musicOnOffLabel);
 		table.add(volumeSoundSlider).left();
-		//table.row();
-		//table.add(soundOnOffLabel);
+		table.row();
+		table.add(resolutionLabel);
+		table.add(resolutionSelectBox);
 		//table.add(soundEffectsCheckBox);
 		table.row().pad(10,0,0,10);
 		//table.add(saveButton).colspan(2);
@@ -165,8 +144,7 @@ public class PreferencesScreen implements Screen {
 
 	@Override
 	public void resize(int width, int height) {
-		// TODO Auto-generated method stub
-
+		stg.getViewport().update(width, height,true);
 	}
 
 	@Override
