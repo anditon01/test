@@ -15,10 +15,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.mygdx.game.AppPreferences;
+import com.mygdx.game.B2dModel;
 import com.mygdx.game.Box2DTutorial;
 
+import database.DatabaseManager;
 import listener.AudioManager;
 
 public class PauseScreen implements Screen {
@@ -26,13 +29,16 @@ public class PauseScreen implements Screen {
 	private Stage stage;
 	private Table table;
 	private Skin skin;
-
+	private DatabaseManager dbManager;
+	private B2dModel player;
+	 private int currentLevel;
+	
 	public PauseScreen(Box2DTutorial box2dTutorial) {
 		this.parent = box2dTutorial;
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
 
-        skin = new Skin(Gdx.files.internal("skin/glassy/glassy-ui.json"));
+        skin = new Skin(Gdx.files.internal("skin/pixthulhu/pixthulhu-ui.json"));
         table = new Table();
         table.setFillParent(true);
         stage.addActor(table);
@@ -47,6 +53,7 @@ public class PauseScreen implements Screen {
 		TextButton optionsButton = new TextButton("Options", skin);
 		TextButton quitButton = new TextButton("Quit", skin);
 		TextButton saveButton = new TextButton("Save",skin);
+		
 		// Add listeners to the buttons
 		resumeButton.addListener(new ChangeListener() {
 			@Override
@@ -66,6 +73,14 @@ public class PauseScreen implements Screen {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
 				Gdx.app.exit(); // Exit the application
+			}
+		});
+		
+		saveButton.addListener(new ChangeListener() {
+			
+			@Override
+			public void changed(ChangeEvent event, Actor actor) {
+				dbManager.saveGame(player.player.getPosition().x, player.player.getPosition().y, currentLevel);
 			}
 		});
 

@@ -108,7 +108,7 @@ public class BodyFactory {
 	public void makeConeSensor(Body body, float size) {
 
 		FixtureDef fixtureDef = new FixtureDef();
-		// fixtureDef.isSensor = true; // will add in future
+		 fixtureDef.isSensor = true; // will add in future
 
 		PolygonShape polygon = new PolygonShape();
 

@@ -12,7 +12,14 @@
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-17/"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-17/">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.buildship.core.gradleclasspathcontainer"/>
+	<classpathentry kind="lib" path="C:/Users/USUARIO/Downloads/test/gdx-sqlite/sqlite-jdbc-3.7.2.jar" sourcepath="/test/sqlite-jdbc-3.7.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/USUARIO/Downloads/test/gdx-sqlite/gdx-sqlite-desktop.jar"/>
+	<classpathentry kind="lib" path="C:/Users/USUARIO/Downloads/test/gdx-sqlite/gdx-sqlite.jar"/>
 	<classpathentry kind="output" path="bin/default"/>
 </classpath>

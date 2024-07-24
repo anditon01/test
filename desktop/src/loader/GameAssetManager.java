@@ -17,6 +17,7 @@ public class GameAssetManager {
 	// Skin
 	public final String skin = "skin/glassy/glassy-ui.json";
 	public final String skinMetal = "skin/metal/metal-ui.json";
+	public final String skinPixthulhu = "skin/pixthulhu/pixthulhu-ui.json";
 	// Textures
 	public final String title = "title.png";
 	public final String anim = "linksprite.png";
@@ -35,8 +36,10 @@ public class GameAssetManager {
 	public void queueAddSkin(){
 		SkinParameter params = new SkinParameter("skin/glassy/glassy-ui.atlas");
 		SkinParameter params1 = new SkinParameter("skin/metal/metal-ui.atlas") ;
+		SkinParameter params2 = new SkinParameter("skin/pixthulhu/pixthulhu-ui.atlas") ;
 		manager.load(skinMetal, Skin.class, params1);
 		manager.load(skin, Skin.class, params);
+		manager.load(skinPixthulhu, Skin.class, params2);
 	}
 	public void queueAddImages() {
 		manager.load(walkAtlas,TextureAtlas.class);

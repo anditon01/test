@@ -9,28 +9,33 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.mygdx.game.B2dModel;
 
+import views.MainScreen;
+
 public class B2dContactListener implements ContactListener {
 	private B2dModel parent;
-
+	private MainScreen game;
+	public B2dContactListener(B2dModel parent, MainScreen game) {
+		this.parent = parent;
+		this.game = game;
+	}
 	public B2dContactListener(B2dModel parent) {
 		this.parent = parent;
 	}
-
 	@Override
 	public void beginContact(Contact contact) {
 		System.out.println("Contact");
 		Fixture fa = contact.getFixtureA();
 		Fixture fb = contact.getFixtureB();
 		System.out.println(fa.getBody().getType()+" has hit "+ fb.getBody().getType());
-		if(fa.getBody().getType() == BodyType.StaticBody){
-			System.out.println("Adding Force");
-			//fb.getBody().applyForceToCenter(new Vector2(-100000,-100000), true);
-		}
+		if (contact.getFixtureA().isSensor() || contact.getFixtureB().isSensor()) {
+			System.out.println("sensor");
+            //game.showMessage("You have entered the sensor area!");
+        }
 	}
 
 	@Override
 	public void endContact(Contact contact) {
-		// TODO Auto-generated method stub
+		System.out.println("end contact");
 
 	}
 

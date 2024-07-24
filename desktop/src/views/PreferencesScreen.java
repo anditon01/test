@@ -51,7 +51,7 @@ public class PreferencesScreen implements Screen {
 		table.setDebug(true);
 		stg.addActor(table);
 
-		Skin skin = new Skin(Gdx.files.internal("skin/glassy/glassy-ui.json"));
+		Skin skin = new Skin(Gdx.files.internal("skin/pixthulhu/pixthulhu-ui.json"));
 		resolutionSelectBox = new SelectBox<>(skin);
         resolutionSelectBox.setItems("1280x720", "1920x1080", "800x600");
         
@@ -70,7 +70,7 @@ public class PreferencesScreen implements Screen {
             }
         });
         
-		final Slider volumeMusicSlider = new Slider(0f, 1f, 0.1f, false, skin);
+		final Slider volumeMusicSlider = new Slider(0f, 2f, 0.1f, false, skin);
 		volumeMusicSlider.setValue(AppPreferences.getInstance().getMusicVolume());
 	//	volumeMusicSlider.setValue(parent.getPreferences().getMusicVolume());
 		volumeMusicSlider.addListener(event -> {
@@ -95,7 +95,7 @@ public class PreferencesScreen implements Screen {
             return true;				
 		});
 		
-		final TextButton backButton = new TextButton("Back", skin,"small");
+		final TextButton backButton = new TextButton("Back", skin,"default");
 		backButton.addListener(new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
@@ -116,12 +116,12 @@ public class PreferencesScreen implements Screen {
 		table.add(titleLabel).colspan(2);
 		table.row().pad(10,0,0,10);
 		table.add(volumeMusicLabel);
-		table.add(volumeMusicSlider);
+		table.add(volumeMusicSlider).fill();
 		//table.add(volumeSoundLabel);
 		//table.add(musiCheckBox);
 		table.row().pad(10,0,0,10);
 		table.add(musicOnOffLabel);
-		table.add(volumeSoundSlider).left();
+		table.add(volumeSoundSlider).fill();
 		table.row();
 		table.add(resolutionLabel);
 		table.add(resolutionSelectBox);

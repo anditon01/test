@@ -20,9 +20,9 @@ public class B2dModel {
 	private KeyboardController controller;
 	//private Box2DDebugRenderer debugRenderer;
 	private OrthographicCamera camera;
-	private Body bodyd;
-	private Body bodys;
-	private Body bodyk;
+	private Body muro;
+	public Body sensor;
+	private Body entrada;
 	public Body player;
 	private float movSpeed = 5f;
 
@@ -37,13 +37,18 @@ public class B2dModel {
 		BodyFactory bodyFactory = BodyFactory.getInstance(world);
 		player = bodyFactory.makeBoxPolyBody(1, 1, 2, 2, BodyFactory.RUBBER, BodyType.DynamicBody, true);
 		bodyFactory.makeBoxPolyBody(0, -10, 50, 10, BodyFactory.RUBBER, BodyType.StaticBody, false);
+		muro = bodyFactory.makeBoxPolyBody(-10, 0, 10, 15, BodyFactory.STONE, BodyType.StaticBody, false);
+		entrada = bodyFactory.makeBoxPolyBody(10, 10, 4, 2, BodyFactory.RUBBER, BodyType.KinematicBody, false);
+		bodyFactory.makeConeSensor(entrada, 5);
 		// bodyFactory.makeCirclePolyBody(1, 1, 2, BodyFactory.RUBBER,
 		// BodyType.DynamicBody, false);
 		// bodyFactory.makeCirclePolyBody(4, 1, 2, BodyFactory.STEEL,
 		// BodyType.DynamicBody, false);
 		bodyFactory.makeCirclePolyBody(-4, 1, 2, BodyFactory.STONE, BodyType.DynamicBody, false);
 	}
-
+	public World getWorld() {
+        return world;
+    }
 //	private void createMovingObject() {
 //		BodyDef bodyDef = new BodyDef();
 //		bodyDef.type = BodyDef.BodyType.KinematicBody;

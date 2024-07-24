@@ -1,13 +1,7 @@
-package views;
+package minigames;
 
-import java.util.random.RandomGenerator.StreamableGenerator;
-
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.*;
 import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -15,20 +9,17 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.mygdx.game.B2dModel;
 import com.mygdx.game.Box2DTutorial;
 
 import controller.KeyboardController;
 import listener.AudioManager;
-import listener.B2dContactListener;
+import views.PauseScreen;
 
-public class MainScreen implements Screen {
+public class Cantunia implements Screen {
 	private Box2DTutorial parent;
 	private B2dModel model;
 	private OrthographicCamera camera;
@@ -47,11 +38,9 @@ public class MainScreen implements Screen {
 	private Stage stage;
 	private Animation<TextureRegion> walkAnimation;
 	private float stateTime;
-	private Label messageLabel;
 
-	public MainScreen(Box2DTutorial parent) {
-
-		camera = new OrthographicCamera(64, 48);
+	public Cantunia() {
+		camera = new OrthographicCamera(32, 24);
 		controller = new KeyboardController();
 		model = new B2dModel(controller, camera);
 		debugRenderer = new Box2DDebugRenderer();// (true, true, true, true, true, true);
@@ -78,7 +67,6 @@ public class MainScreen implements Screen {
 	}
 
 	public void create() {
-		Skin skin = new Skin(Gdx.files.internal("skin/pixthulhu/pixthulhu-ui.json"));
 		// animAtlas = parent.assetManager.manager.get("atlas/linkwalk.atlas");
 		DownTex = new Texture("linkwalk/walkD.png");
 		LeftTex = new Texture("linkAnim/walkL.png");
@@ -88,19 +76,11 @@ public class MainScreen implements Screen {
 		System.arraycopy(tmp[0], 0, walkFrames, 0, 10);
 		walkAnimation = new Animation<TextureRegion>(0.1f, walkFrames);
 		stateTime = 0f;
-
-		model.getWorld().setContactListener(new B2dContactListener(model, this));
-		messageLabel = new Label("sensor", skin);
-		messageLabel.setPosition(10, 10);
-		 stage.addActor(messageLabel);
 	}
 
 	@Override
 	public void show() {
-
 		Gdx.input.setInputProcessor(controller);
-		// Skin skin = new Skin(Gdx.files.internal("skin/metal/metal-ui.json"));
-		// pausa = new PauseScreen(parent);
 
 	}
 
@@ -124,27 +104,22 @@ public class MainScreen implements Screen {
 		sb.draw(currentFrame, model.player.getPosition().x - 1, model.player.getPosition().y - 1, 2, 2);
 		sb.end();
 
-		// Skin skin = new Skin(Gdx.files.internal("skin/glassy/glassy-ui.json"));
-
-		// messageLabel = new Label("hello", skin);
-		// messageLabel.setPosition(10, 10);
-		// stage.addActor(messageLabel);
-
 		camera.position.set(model.player.getPosition().x, model.player.getPosition().y, 0);
 		camera.update();
 		debugRenderer.render(model.world, camera.combined);
+		
 		if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
 			paused = !paused;// pausa
 			togglePause();
 			paused = !paused;
 		}
+
 	}
 
 	private void updateGame(float delta) {
 		// Update your game world here
 		// Example: update physics, handle input, update game state, etc.
 	}
-
 	private void togglePause() {
 		if (paused) {
 			// Pause game and show pause menu
@@ -154,18 +129,9 @@ public class MainScreen implements Screen {
 			// Optionally add resume logic if needed
 		}
 	}
-
-	public void showMessage(String message) {
-		messageLabel.setText(message);
-	}
-
-	public void hideMessage() {
-		messageLabel.setText("");
-	}
-
 	@Override
 	public void resize(int width, int height) {
-		stage.getViewport().update(width, height, true);
+		stage.getViewport().update(width, height,true);
 	}
 
 	@Override
@@ -188,9 +154,7 @@ public class MainScreen implements Screen {
 
 	@Override
 	public void dispose() {
-		// playerTex.dispose();
 		sb.dispose();
-
 	}
 
 }

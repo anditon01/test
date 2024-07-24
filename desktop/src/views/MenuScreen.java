@@ -39,7 +39,7 @@ public class MenuScreen implements Screen {
 		//titleTheme = parent.assetManager.manager.get("music/title_theme.mp3");
 		//titleTheme.setVolume(parent.getPreferences().getMusicVolume());
 		//titleTheme.play();
-		skin = parent.assetManager.manager.get("skin/glassy/glassy-ui.json");
+		skin = parent.assetManager.manager.get("skin/pixthulhu/pixthulhu-ui.json");
 		//stg.act(Math.min(Gdx.graphics.getDeltaTime(), 1/30f));
 		//stg.draw();
 	}
@@ -59,7 +59,7 @@ public class MenuScreen implements Screen {
 		TextButton preferences = new TextButton("Preferences",skin);
 		TextButton exit = new TextButton("Exit", skin);
 		
-		table.add(newGame).colspan(2);
+		table.add(newGame).fill();
 		table.row().pad(10, 0, 10, 0);
 		table.add(preferences);
 		table.row();
