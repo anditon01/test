@@ -17,6 +17,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.bullet.linearmath.int4;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -48,7 +49,8 @@ public class MainScreen implements Screen {
 	private Animation<TextureRegion> walkAnimation;
 	private float stateTime;
 	private Label messageLabel;
-
+	private int level =1;
+	
 	public MainScreen(Box2DTutorial parent) {
 
 		camera = new OrthographicCamera(64, 48);
@@ -92,7 +94,7 @@ public class MainScreen implements Screen {
 		model.getWorld().setContactListener(new B2dContactListener(model, this));
 		messageLabel = new Label("sensor", skin);
 		messageLabel.setPosition(10, 10);
-		 stage.addActor(messageLabel);
+		stage.addActor(messageLabel);
 	}
 
 	@Override
@@ -121,7 +123,9 @@ public class MainScreen implements Screen {
 
 		sb.setProjectionMatrix(camera.combined);
 		sb.begin();
+
 		sb.draw(currentFrame, model.player.getPosition().x - 1, model.player.getPosition().y - 1, 2, 2);
+		
 		sb.end();
 
 		// Skin skin = new Skin(Gdx.files.internal("skin/glassy/glassy-ui.json"));
@@ -131,6 +135,7 @@ public class MainScreen implements Screen {
 		// stage.addActor(messageLabel);
 
 		camera.position.set(model.player.getPosition().x, model.player.getPosition().y, 0);
+
 		camera.update();
 		debugRenderer.render(model.world, camera.combined);
 		if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {

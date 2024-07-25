@@ -6,6 +6,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.physics.bullet.linearmath.int4;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -31,17 +32,17 @@ public class PauseScreen implements Screen {
 	private Skin skin;
 	private DatabaseManager dbManager;
 	private B2dModel player;
-	 private int currentLevel;
-	
+	private int currentLevel;
+
 	public PauseScreen(Box2DTutorial box2dTutorial) {
 		this.parent = box2dTutorial;
-        stage = new Stage(new ScreenViewport());
-        Gdx.input.setInputProcessor(stage);
+		stage = new Stage(new ScreenViewport());
+		Gdx.input.setInputProcessor(stage);
 
-        skin = new Skin(Gdx.files.internal("skin/pixthulhu/pixthulhu-ui.json"));
-        table = new Table();
-        table.setFillParent(true);
-        stage.addActor(table);
+		skin = new Skin(Gdx.files.internal("skin/pixthulhu/pixthulhu-ui.json"));
+		table = new Table();
+		table.setFillParent(true);
+		stage.addActor(table);
 	}
 
 	@Override
@@ -52,8 +53,8 @@ public class PauseScreen implements Screen {
 		TextButton resumeButton = new TextButton("Resume", skin);
 		TextButton optionsButton = new TextButton("Options", skin);
 		TextButton quitButton = new TextButton("Quit", skin);
-		TextButton saveButton = new TextButton("Save",skin);
-		
+		TextButton saveButton = new TextButton("Save", skin);
+
 		// Add listeners to the buttons
 		resumeButton.addListener(new ChangeListener() {
 			@Override
@@ -75,9 +76,9 @@ public class PauseScreen implements Screen {
 				Gdx.app.exit(); // Exit the application
 			}
 		});
-		
+
 		saveButton.addListener(new ChangeListener() {
-			
+
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
 				dbManager.saveGame(player.player.getPosition().x, player.player.getPosition().y, currentLevel);
@@ -94,14 +95,18 @@ public class PauseScreen implements Screen {
 		table.add(quitButton).fillX().uniformX();
 
 	}
-    
+
+	public void save(int x, int y) {
+		dbManager.saveGame(x, y, currentLevel);
+	}
+
 	@Override
 	public void render(float delta) {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
-        stage.draw();
+		stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
+		stage.draw();
 
 	}
 
@@ -131,23 +136,24 @@ public class PauseScreen implements Screen {
 	@Override
 	public void dispose() {
 		stage.dispose();
-        skin.dispose();
+		skin.dispose();
 	}
+
 	// Method to show or hide the pause menu
-    public void togglePauseMenu() {
-    	System.out.println("toggle");
-        if (stage.getActors().size == 0) {
-            stage.addActor(table);
-        } else {
-            table.clear();
-            stage.getActors().removeValue(table, true);
-        }
-    }
-    
-    public void handleInput() {
-        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
-        	System.out.println("pause");
-            togglePauseMenu();
-        }
-    }
+	public void togglePauseMenu() {
+		System.out.println("toggle");
+		if (stage.getActors().size == 0) {
+			stage.addActor(table);
+		} else {
+			table.clear();
+			stage.getActors().removeValue(table, true);
+		}
+	}
+
+	public void handleInput() {
+		if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+			System.out.println("pause");
+			togglePauseMenu();
+		}
+	}
 }

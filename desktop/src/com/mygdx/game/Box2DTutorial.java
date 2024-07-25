@@ -5,6 +5,9 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.physics.bullet.linearmath.int4;
 
 import loader.GameAssetManager;
+import minigames.Cantunia;
+import minigames.Casa1028;
+import minigames.PadreAlmeida;
 import views.EndScreen;
 import views.LoadingScreen;
 import views.MainScreen;
@@ -21,11 +24,18 @@ public class Box2DTutorial extends Game {
 	private EndScreen endScreen;
 	private PauseScreen pauseScreen;
 	public GameAssetManager assetManager;// = new GameAssetManager();
+	public Cantunia cantunia;
+	public Casa1028 casa1028;
+	public PadreAlmeida padreAlmeida;
+	
 	public final static int MENU = 0;
 	public final static int PREFERENCES = 1;
 	public final static int APPLICATION = 2;
 	public final static int ENDGAME = 3;
 	public final static int PAUSE =4;
+	public final static int CANTUNIA=5;
+	public final static int CASA1028=6;
+	public final static int PADREALMEIDA=7;
 
 	@Override
 	public void create() {
@@ -34,8 +44,7 @@ public class Box2DTutorial extends Game {
 		pauseScreen = new PauseScreen(this);
 		//preferences = new AppPreferences();
 		setScreen(loadingScreen);
-		
-		
+				
 		assetManager.queueAddMusic();
 		assetManager.manager.finishLoading();
 		//playingSong = assetManager.manager.get("music/Dr._Wily_Castle.mp3");
@@ -70,6 +79,24 @@ public class Box2DTutorial extends Game {
 				System.out.println("creando pause");
 				pauseScreen = new PauseScreen(this);
 			this.setScreen(pauseScreen);
+			break;
+		case CANTUNIA:
+			if(cantunia == null)
+				System.out.println("creando cantunia");
+				cantunia = new Cantunia(this);
+			this.setScreen(cantunia);
+			break;
+		case PADREALMEIDA:
+			if(padreAlmeida == null)
+				System.out.println("creando padreAlmeida");
+				padreAlmeida = new PadreAlmeida(this);
+			this.setScreen(padreAlmeida);
+			break;
+		case CASA1028:
+			if(casa1028 == null)
+				System.out.println("creando casa1028");
+				casa1028 = new Casa1028(this);
+			this.setScreen(casa1028);
 			break;
 		}
 	}

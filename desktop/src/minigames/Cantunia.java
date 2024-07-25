@@ -39,12 +39,12 @@ public class Cantunia implements Screen {
 	private Animation<TextureRegion> walkAnimation;
 	private float stateTime;
 
-	public Cantunia() {
+	public Cantunia(Box2DTutorial bdd) {
 		camera = new OrthographicCamera(32, 24);
 		controller = new KeyboardController();
 		model = new B2dModel(controller, camera);
 		debugRenderer = new Box2DDebugRenderer();// (true, true, true, true, true, true);
-		this.parent = parent;
+		this.parent = bdd;
 		paused = false;
 		sb = new SpriteBatch();
 		sb.setProjectionMatrix(camera.combined);
